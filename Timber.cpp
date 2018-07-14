@@ -11,31 +11,45 @@ int main()
   ******************************/
   Texture tBack;
   tBack.loadFromFile("resources/graphics/background.png");
-  
   Texture tTree;
   tTree.loadFromFile("resources/graphics/tree.png");
-
   Texture tBee;
   tBee.loadFromFile("resources/graphics/bee.png");
-
+  Texture tCloud;
+  tCloud.loadFromFile("resources/graphics/cloud.png");
   
   Sprite sBack;
   sBack.setTexture(tBack);
   sBack.setPosition(0, 0);
-
   Sprite sTree;
   sTree.setTexture(tTree);
   sTree.setPosition(810, 0);
-
   Sprite sBee;
   sBee.setTexture(tBee);
-  sBee.setPosition(0, 800);
+  
+  Sprite sCloud1;
+  sCloud1.setTexture(tCloud);
+  Sprite sCloud2;
+  sCloud2.setTexture(tCloud);
+  Sprite sCloud3;
+  sCloud3.setTexture(tCloud);
+  Sprite sCloud4;
+  sCloud4.setTexture(tCloud);
 
   /****************************
     Variables
   *****************************/
   bool beeActive = false;
+  bool cloud1Active = false;
+  bool cloud2Active = false;
+  bool cloud3Active = false;
+  bool cloud4Active = false;
+  
   float beeSpeed = 0.0f;
+  float cloud1Speed = 0.0f;
+  float cloud2Speed = 0.0f;
+  float cloud3Speed = 0.0f;
+  float cloud4Speed = 0.0f;
   
   Clock clock;
   
@@ -64,7 +78,8 @@ int main()
 	  // how high is the bee
 	  srand ((int)time(0) * 10);
 	  float height = (rand() % 500) + 500;
-	  sBee.setPosition (200, height);
+	  float high = (rand() % 1920);
+	  sBee.setPosition (high, height);
 	  beeActive = true;
 	}
       // move the bee
@@ -83,6 +98,31 @@ int main()
 	    }
 
 	}
+
+      if (!cloud1Active)
+	{
+	  // how fast is the cloud
+	  srand((int)time(0) * 10);
+	  cloud1Speed = (rand() % 200);
+
+	  // how high is the cloud
+	  srand((int)time(0) * 10);
+	  float height = (rand() % 150);
+	  sCloud1.setPosition(-200, height);
+	  cloud1Active = true;
+	}
+      else
+	{
+	  sCloud1.setPosition
+	    (sCloud1.getPosition().x +
+	     (cloud1Speed * dt.asSeconds()),
+	     sCloud1.getPosition().y);
+
+	  if (sCloud1.getPosition().x > 1920)
+	    {
+	      cloud1Active = false;
+	    }
+	}
       
       /*******************************
 	Draw the scene
@@ -92,6 +132,7 @@ int main()
       window.draw(sBack);
       window.draw(sTree);
       window.draw(sBee);
+      window.draw(sCloud1);
 
       window.display();
     }
