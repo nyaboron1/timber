@@ -99,6 +99,7 @@ int main()
 
 	}
 
+      
       if (!cloud1Active)
 	{
 	  // how fast is the cloud
@@ -123,6 +124,58 @@ int main()
 	      cloud1Active = false;
 	    }
 	}
+
+      
+      if (!cloud2Active)
+	{
+	  // how fast is the cloud
+	  srand((int)time(0) * 20);
+	  cloud2Speed = (rand() % 200);
+
+	  // how high is the cloud
+	  srand((int)time(0) * 20);
+	  float height = (rand() % 300) - 150;
+	  sCloud2.setPosition(-200, height);
+	  cloud2Active = true;
+	}
+      else
+	{
+	  sCloud2.setPosition
+	    (sCloud2.getPosition().x +
+	     (cloud2Speed * dt.asSeconds()),
+	     sCloud2.getPosition().y);
+
+	  if (sCloud2.getPosition().x > 1920)
+	    {
+	      cloud2Active = false;
+	    }
+	}
+
+      if (!cloud3Active)
+	{
+	  // how fast is the cloud
+	  srand((int)time(0) * 10);
+	  cloud3Speed = (rand() % 300);
+
+	  // how high is the cloud
+	  srand((int)time(0) * 10);
+	  float height = (rand() % 450) - 150;
+	  sCloud3.setPosition(-200, height);
+	  cloud3Active = true;
+	}
+      else
+	{
+	  sCloud3.setPosition
+	    (sCloud3.getPosition().x +
+	     (cloud3Speed * dt.asSeconds()),
+	     sCloud3.getPosition().y);
+
+	  if (sCloud3.getPosition().x > 1920)
+	    {
+	      cloud3Active = false;
+	    }
+	}
+
       
       /*******************************
 	Draw the scene
@@ -133,7 +186,9 @@ int main()
       window.draw(sTree);
       window.draw(sBee);
       window.draw(sCloud1);
-
+      window.draw(sCloud2);
+      window.draw(sCloud3);
+      
       window.display();
     }
 
