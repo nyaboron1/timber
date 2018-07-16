@@ -80,10 +80,23 @@ int main()
   int score = 0; 
   
   Clock clock;
+
+  // Time bar
+  RectangleShape timeBar;
+
+  float timeBarStartWidth = 400;
+  float timeBarHeight = 80;
+
+  timeBar.setSize(Vector2f(timeBarStartWidth, timeBarHeight));
+  timeBar.setFillColor(Color::Red);
+  timeBar.setPosition((1920 / 2) - timeBarStartWidth / 2, 980);
+
+  Time gameTimeTotal;
+  float timeRemaining = 6.0f;
+  float timeBarWidthPerSecond = timeBarStartWidth / timeRemaining;
   
   while (window.isOpen())
     {
-      score++;
       /*******************************
 	Handle the players input
       ********************************/
@@ -96,6 +109,10 @@ int main()
       if (Keyboard::isKeyPressed(Keyboard::Return))
 	{
 	  pause = false;
+
+	  // reset de time and the score
+	  score = 0;
+	  timeRemaining = 5;
 	}
 
       /*******************************
@@ -105,6 +122,29 @@ int main()
 	{
 	  Time dt = clock.restart(); // delta time
 
+	  // Subtract from the amount of time remaining
+	  timeRemaining -= dt.asSeconds();
+	  // size up the time bar
+	  timeBar.setSize(Vector2f(timeBarWidthPerSecond *
+				   timeRemaining, timeBarHeight));
+
+	  if (timeRemaining <= 0.0f)
+	    {
+	      // pase the game
+	      pause = true;
+
+	      // change the message shown to the player
+	      messageText.setString("Out of time");
+
+	      // Reposition the text
+	      FloatRect textRect = messageText.getLocalBounds();
+	      messageText.setOrigin
+		(textRect.left +
+		 textRect.width / 2.0f,
+		 textRect.top + textRect.height / 2.0f);
+
+	      messageText.setPosition(1920 / 2, 1080 / 2);
+	    }
 	  // update bee
 	  if (!beeActive)
 	    {
@@ -206,14 +246,14 @@ int main()
 		(sCloud3.getPosition().x +
 		 (cloud3Speed * dt.asSeconds()),
 		 sCloud3.getPosition().y);
-
+	      
 	      if (sCloud3.getPosition().x > 1920)
 		{
 		  cloud3Active = false;
 		}
 	    }
 	}
-
+      
       // Update the score text
       std::stringstream ss;
       ss << "Score = " << score;
@@ -232,6 +272,8 @@ int main()
       window.draw(sCloud2);
       window.draw(sCloud3);
       window.draw(scoreText);
+      window.draw(timeBar);
+      
       if (pause)
 	  window.draw(messageText);
       
