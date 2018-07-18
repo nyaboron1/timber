@@ -1,17 +1,51 @@
 #include <SFML/Graphics.hpp>
+
 #include <sstream>
 
 using namespace sf;
 
-void updateBranches (int seed);
 
 const int NUM_BRANCHES = 6;
 
-Sprite branches [NUM_BRANCHES];
+Sprite branches[NUM_BRANCHES];
 
-enum class side {LEFT, RIGHT, NONE};
+enum class side
+  {
+   LEFT,
+   RIGHT,
+   NONE
+  };
 
 side branchPositions [NUM_BRANCHES];
+
+
+void updateBranches (int seed)
+{
+  // move branches down one place
+  for (int i = NUM_BRANCHES; i > 0; --i)
+    {
+      branchPositions[i] = branchPositions[i-1];
+    }
+
+  // spawn a new branch at position 0
+  srand((int)time(0) + seed);
+
+  int r = (rand() % 5);
+
+  if (r == 0)
+    {
+      branchPositions[0] = side::LEFT;
+    }
+  else if (r == 1)
+    {
+      branchPositions[0] = side::RIGHT;
+    }
+  else
+    {
+      branchPositions[0] = side::NONE;
+    }
+}
+
 
 int main()
 {
@@ -112,6 +146,12 @@ int main()
   Time gameTimeTotal;
   float timeRemaining = 6.0f;
   float timeBarWidthPerSecond = timeBarStartWidth / timeRemaining;
+
+  updateBranches(1);
+  updateBranches(2);
+  updateBranches(3);
+  updateBranches(4);
+  updateBranches(5);
   
   while (window.isOpen())
     {
