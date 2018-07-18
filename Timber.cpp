@@ -1,8 +1,17 @@
 #include <SFML/Graphics.hpp>
-
 #include <sstream>
 
 using namespace sf;
+
+void updateBranches (int seed);
+
+const int NUM_BRANCHES = 6;
+
+Sprite branches [NUM_BRANCHES];
+
+enum class side {LEFT, RIGHT, NONE};
+
+side branchPositions [NUM_BRANCHES];
 
 int main()
 {
@@ -20,6 +29,8 @@ int main()
   tBee.loadFromFile("resources/graphics/bee.png");
   Texture tCloud;
   tCloud.loadFromFile("resources/graphics/cloud.png");
+  Texture tBranch;
+  tBranch.loadFromFile("resources/graphics/branch.png");
   
   Sprite sBack;
   sBack.setTexture(tBack);
@@ -29,7 +40,6 @@ int main()
   sTree.setPosition(810, 0);
   Sprite sBee;
   sBee.setTexture(tBee);
-  
   Sprite sCloud1;
   sCloud1.setTexture(tCloud);
   Sprite sCloud2;
@@ -38,7 +48,15 @@ int main()
   sCloud3.setTexture(tCloud);
   Sprite sCloud4;
   sCloud4.setTexture(tCloud);
+  // set the texture each branch sprite
+  for (int i = 0; i < NUM_BRANCHES; ++i)
+    {
+      branches[i].setTexture(tBranch);
+      branches[i].setPosition(-2000,-2000);
+      branches[i].setOrigin(220,20);
+    }
 
+  
   Font font;
   font.loadFromFile("resources/fonts/KOMIKAP_.ttf");
 
@@ -259,6 +277,28 @@ int main()
       ss << "Score = " << score;
       scoreText.setString(ss.str());
 
+      // Update the branch sprites
+      for (int i = 0; i < NUM_BRANCHES; ++i)
+	{
+	  float height = i * 150;
+	  if (branchPositions[i] == side::LEFT)
+	    {
+	      // move the sprite to the left side
+	      branches[i].setPosition(610,height);
+	      // Flip the msprite round the other way
+	      branches[i].setRotation(180);
+	    }
+	  else if (branchPositions[i] == side::RIGHT)
+	    {
+	      branches[i].setPosition(1330,height);
+	      branches[i].setRotation(0);
+	    }
+	  else
+	    {
+	      // Hide the branch
+	      branches[i].setPosition(3000, height);
+	    }
+	}
       
       /*******************************
 	Draw the scene
@@ -273,6 +313,11 @@ int main()
       window.draw(sCloud3);
       window.draw(scoreText);
       window.draw(timeBar);
+      // draw branches
+      for (int i = 0; i < NUM_BRANCHES; ++i)
+	{
+	  window.draw(branches[i]);
+	}
       
       if (pause)
 	  window.draw(messageText);
