@@ -65,6 +65,15 @@ int main()
   tCloud.loadFromFile("resources/graphics/cloud.png");
   Texture tBranch;
   tBranch.loadFromFile("resources/graphics/branch.png");
+  Texture tPlayer;
+  tPlayer.loadFromFile("resources/graphics/player.png");
+  Texture tAxe;
+  tAxe.loadFromFile("resources/graphics/axe.png");
+  Texture tLog;
+  tLog.loadFromFile("resources/graphics/log.png");
+  Texture tRip;
+  tRip.loadFromFile("resources/graphics/rip.png");
+
   
   Sprite sBack;
   sBack.setTexture(tBack);
@@ -82,6 +91,18 @@ int main()
   sCloud3.setTexture(tCloud);
   Sprite sCloud4;
   sCloud4.setTexture(tCloud);
+  Sprite sPlayer;
+  sPlayer.setTexture(tPlayer);
+  sPlayer.setPosition(580,720);
+  Sprite sAxe;
+  sAxe.setTexture(tAxe);
+  sAxe.setPosition(700,830);
+  Sprite sLog;
+  sLog.setTexture(tLog);
+  sLog.setPosition(810,720);
+  Sprite sRip;
+  sRip.setTexture(tRip);
+  sRip.setPosition(600,860);
   // set the texture each branch sprite
   for (int i = 0; i < NUM_BRANCHES; ++i)
     {
@@ -89,7 +110,7 @@ int main()
       branches[i].setPosition(-2000,-2000);
       branches[i].setOrigin(220,20);
     }
-
+  
   
   Font font;
   font.loadFromFile("resources/fonts/KOMIKAP_.ttf");
@@ -133,7 +154,6 @@ int main()
   
   Clock clock;
 
-  // Time bar
   RectangleShape timeBar;
 
   float timeBarStartWidth = 400;
@@ -147,11 +167,17 @@ int main()
   float timeRemaining = 6.0f;
   float timeBarWidthPerSecond = timeBarStartWidth / timeRemaining;
 
-  updateBranches(1);
-  updateBranches(2);
-  updateBranches(3);
-  updateBranches(4);
-  updateBranches(5);
+  // player side
+  side playerSide = side::LEFT;
+
+  // log
+  int logSpeedX = 1000;
+  int logSpeedY = -1500;
+  bool logActive = false;
+
+  // axe
+  const float axePositionLeft = 700.0f;
+  const float axePositionRight = 1075.0f;
   
   while (window.isOpen())
     {
@@ -344,20 +370,25 @@ int main()
 	Draw the scene
       *******************************/
       window.clear();
-
       window.draw(sBack);
-      window.draw(sTree);
-      window.draw(sBee);
       window.draw(sCloud1);
       window.draw(sCloud2);
       window.draw(sCloud3);
+      window.draw(sTree);
+
+      for (int i = 0; i < NUM_BRANCHES; i++) {
+	window.draw(branches[i]);
+      }
+      
+      window.draw(sPlayer);
+      window.draw(sAxe);
+      window.draw(sLog);
+      window.draw(sRip);
+      window.draw(sBee);
       window.draw(scoreText);
       window.draw(timeBar);
-      // draw branches
-      for (int i = 0; i < NUM_BRANCHES; ++i)
-	{
-	  window.draw(branches[i]);
-	}
+      window.draw(scoreText);
+      window.draw(timeBar);
       
       if (pause)
 	  window.draw(messageText);
