@@ -218,6 +218,59 @@ int main()
 	  acceptInput = true;
 	}
 
+      // wrap the player constrols
+      if (acceptInput)
+	{
+	  // Handle pressing the right cursor key
+	  if (KeyBoard::isKeyPressed(Keyboard::Right))
+	    {
+	      playerSide = side::RIGHT;
+	      score++;
+
+	      // Add to the amount of time remaining
+	      timeRemaining += (2 / score) + 0.15f;
+
+	      sAxe.setPosition(AXE_POSITION_RIGHT,
+			       sAxe.getPosition().y);
+
+	      sPlayer.setPosition(1200,720);
+
+	      // update the brances
+	      updateBranches(score);
+
+	      // set the log flying to the left
+	      sLog.setPosition(810,720);
+	      logSpeedX = -5000;
+	      logActive = true;
+
+	      acceptInput = false;
+	    }
+	  else if (KeyBoard::isKeyPressed(Keyboard::Left))
+	    { 
+	      playerSide = side::LEFT;
+	      score++;
+
+	      // Add to the amount of time remaining
+	      timeRemaining += (2 / score) + 0.15f;
+
+	      sAxe.setPosition(AXE_POSITION_LEFT,
+			       sAxe.getPosition().y);
+
+	      sPlayer.setPosition(580,720);
+
+	      // update the brances
+	      updateBranches(score);
+
+	      // set the log flying to the left
+	      sLog.setPosition(810,720);
+	      logSpeedX = 5000;
+	      logActive = true;
+
+	      acceptInput = false;
+	    }
+	    
+	}
+
       /*******************************
 	Update the scene
       *******************************/
