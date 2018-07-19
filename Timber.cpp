@@ -5,9 +5,8 @@
 using namespace sf;
 
 
-const int NUM_BRANCHES = 6;
 
-Sprite branches[NUM_BRANCHES];
+const int NUM_BRANCHES = 6;
 
 enum class side
   {
@@ -16,7 +15,10 @@ enum class side
    NONE
   };
 
+Sprite branches[NUM_BRANCHES];
+
 side branchPositions [NUM_BRANCHES];
+
 
 
 void updateBranches (int seed)
@@ -178,6 +180,9 @@ int main()
   // axe
   const float axePositionLeft = 700.0f;
   const float axePositionRight = 1075.0f;
+
+  // control the player input
+  bool acceptInput = false;
   
   while (window.isOpen())
     {
@@ -197,6 +202,20 @@ int main()
 	  // reset de time and the score
 	  score = 0;
 	  timeRemaining = 5;
+
+	  // make all the branches disappear
+	  for (int i = 1; i < NUM_BRANCHES; ++i)
+	    {
+	      branchPositions[i] = side::NONE;
+	    }
+
+	  // make sure the gravestone is hidden
+	  sRip.setPosition(675, 2000);
+
+	  // move the player into position
+	  sPlayer.setPosition(580, 720);
+
+	  acceptInput = true;
 	}
 
       /*******************************
