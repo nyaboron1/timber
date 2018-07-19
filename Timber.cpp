@@ -468,6 +468,33 @@ int main()
 		    }
 		}
 	    }
+
+	  // handling death
+	  if (branchPositions[5] == playerSide)
+	    {
+	      // death
+	      pause = true;
+	      acceptInput = false;
+
+	      // draw the gravestone
+	      sRip.setPosition(525, 760);
+
+	      // hide player
+	      sPlayer.setPosition(2000, 660);
+
+	      // change the text of the message
+	      messageText.setString("GG");
+
+	      // center it on the screen
+	      FloatRect textRect = messageText.getLocalBounds();
+
+	      messageText.setOrigin(textRect.left +
+				    (textRect.width / 2.0f),
+				    textRect.top +
+				    (textRect.height / 2.0f));
+
+	      messageText.setPosition(1920 / 2.0f, 1080 / 2.0f);
+	    }
 	  
 	}
       
